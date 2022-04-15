@@ -1,0 +1,51 @@
+<h4>All Products</h4>
+
+<table class="table table-bordered table-hover">
+    <thead class="thead-light">
+        <tr>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>View additional feilds</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+    <?php
+    foreach ($result as $key => $value) {
+        echo '<tr>
+            <td>' . $value->name . '</td>
+            <td>' . $value->category. '</td>
+            <td>' . $value->price. '</td>
+            <td>' . $value->stock. '</td>
+            <td><button type = "button" class="btn btn-info view" data-id="'.$value->_id.'">Quick view</button</td>
+            <td><a href="/product/update/'.$value->_id.'"><i class="fas fa-edit"></i></a></td>
+            <td><a href="/product/delete/'.$value->_id.'"><button type="button"  class="btn-danger">
+            <i class="fa-solid fa-delete-left"></i></button></a></td>
+        </tr>';
+    }?>
+    </tbody>
+</table>
+<br/>
+<br/>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"></h5>
+        <button type="button" class="btn-danger" data-bs-dismiss="modal" aria-label="Close">X</button>
+      </div>
+      <div class="modal-body">
+      </div>
+    </div>
+  </div>
+</div>
+<?php
+echo $this->tag->linkTo(
+    '/product/index',
+    'Add more products!'
+);

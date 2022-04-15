@@ -1,0 +1,42 @@
+<h2>Update product details</h2>
+
+<?php echo $this->tag->form(""); ?>
+
+<table>
+        <tr><td>
+        <label for="name">Name</label>
+        </td><td>
+        <?php echo $this->tag->textField(["name", "value"=>"$result->name"]); ?>
+        </td></tr>
+
+        <tr><td>
+        <label for="category">Category</label>
+        </td><td>
+        <?php echo $this->tag->textField(["category", "value"=>"$result->category"]); ?>
+        </td></tr>
+
+        <tr><td>
+        <label for="price">Price</label>
+        </td><td>
+        <?php echo $this->tag->numericField(["price", "value"=>"$result->price"]); ?>
+        </td></tr>
+
+        <tr><td>
+        <label for="stock">Stock</label>
+        </td><td>
+        <?php echo $this->tag->numericField(["stock", "value"=>"$result->stock"]); ?>
+        </td></tr>
+
+        </table>
+    <p>
+        <?php echo $this->tag->submitButton("Update User"); ?>
+    </p>
+
+</form>
+
+<br/>
+<?php
+echo $this->tag->linkTo(
+    '/test/show',
+    'see all users!'
+);

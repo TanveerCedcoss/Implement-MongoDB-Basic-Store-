@@ -1,0 +1,7 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine on
+    RewriteBase /
+    RewriteCond $1 !^(public/Assests)
+    #RewriteRule   ^$ public/    [L]
+    RewriteRule   ^((?s).*)$ public/index.php?_url=/$1 [QSA,L]
+</IfModule>

@@ -1,0 +1,50 @@
+<h2>Add products</h2>
+<?php if ($message !='') {
+    echo '<b>'.$message.'</b>';
+}?>
+<?php echo $this->tag->form("product/add"); ?>
+
+<table>
+        <tr><td>
+        <label for="name">Name</label>
+        </td><td>
+        <?php echo $this->tag->textField("name"); ?>
+        </td></tr>
+
+        <tr><td>
+        <label for="category">Category</label>
+        </td><td>
+        <?php echo $this->tag->textField("category"); ?>
+        </td></tr>
+
+        <tr><td>
+        <label for="price">Price</label>
+        </td><td>
+        <?php echo $this->tag->numericField("price"); ?>
+        </td></tr>
+
+        <tr><td>
+        <label for="stock">Stock</label>
+        </td><td>
+        <?php echo $this->tag->numericField("stock"); ?>
+        </td></tr>
+
+        </table>
+   <label for="additonal-fields">Additional fields</label>
+   <button type="button" id="add" class="btn btn-sm btn-primary">+</button>
+    <div id="additional"></div>
+    <br/>
+    <label for="variations">Variations</label>
+   <button type="button" id="var" class="btn btn-sm btn-primary">+</button>
+   <br/>
+    <div id="variations"></div>
+    <br/>
+    <p>
+        <?php echo $this->tag->submitButton("Add product"); ?>
+    </p>
+</form>
+
+
+
+
+<br/>
