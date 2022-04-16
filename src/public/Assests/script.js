@@ -16,15 +16,39 @@ $(document).ready(function() {
         if (typeof(html2)=='undefined') {
             html2 = '';
             addCount2=1;
+        } else {
+            addCount2 +=1;
         }
-        html2 = '<tr id="varIns'+addCount2+'" ><td><input type=text name=variationKey[] placeholder=Label ></td>\
-        <td>&nbsp;<input type=text name=variationValue[] placeholder=Value></td>\
-        <td>&nbsp;<input type=text name=variationPrice[] placeholder=Price></td>\
-        <td>&nbsp;<button type="button"  class="btn-danger my-1" id="removeVar" data-id="Ins'+addCount2+'">\
-        <i class="fa-solid fa-trash-can"></i></button></td></tr> <br/>'
+        html2 = '<tr class="varIns'+addCount2+'" >\
+        <td><input type=text name=variant['+addCount2+'][field][] id="field" placeholder=Label >\
+        &nbsp;<input type=text name=variant['+addCount2+'][value][] placeholder=Value> \
+        <button type="button" class="btn-info subVar my-1" data-id='+addCount2+'>\
+            +</button></td></tr>\
+            <td> <div class ="subField'+addCount2+'"></div>\</td>\
+        <tr class="varIns'+addCount2+'" ><td><input type=text name=variant['+addCount2+'][price] placeholder=variantPrice>\
+        &nbsp;<button type="button"  class="btn-danger my-1" id="removeVar" data-id="Ins'+addCount2+'">\
+        <i class="fa-solid fa-trash-can"></i></button></td>\
+        </tr>'
         $('#variations').append(html2);
-        addCount2 +=1;
+       
     });
+
+    subVarCount=0;
+    $("body").on("click",".subVar", function(e){
+        console.log("sub field");
+        id = $(this).data("id");
+        console.log(id);
+        e.preventDefault();
+            subVarCount +=1;
+            html = '<div class="subVar'+subVarCount+'">\
+                    <tr class="subVar'+subVarCount+'"><td><input name="variant['+addCount2+'][field][]" placeholder="Varitant Field Key"></td>\
+                    <td><input name="variant['+addCount2+'][value][]" placeholder="Variant Field Value"></td>\
+                    <td><button type="button" class="btn-danger varMinus my-1" data-id='+subVarCount+'></td>\
+                    <i class="fa-solid fa-delete-left"></i></button></tr>\
+                    </div>';
+            $(".subField"+id+"").append(html);
+            console.log('end');
+        });
 
 
     $('body').on('click', '#removeAdd', function(){
@@ -36,7 +60,14 @@ $(document).ready(function() {
     $('body').on('click', '#removeVar', function(){
         console.log('delete variations');
         id = $(this).data('id');
-        $("#var"+id).remove();
+        console.log('.var'+id);
+        $(".var"+id).remove();
+    });
+
+    $('body').on('click', '.varMinus', function(){
+        id = $(this).data('id');
+        console.log('delete subvariations '+id);
+        $(".subVar"+id).remove();
     });
 
     $('body').on('click', '.view', function(){
@@ -74,3 +105,4 @@ function viewProduct(id)
         
     });
 }
+

@@ -23,13 +23,16 @@ class ProductController extends Controller
     public function addAction()
     {
         if ($this->request->ispost()) {
-            
             $values = $this->request->getpost();
-            echo '<pre>';
-            print_r($values);
-            die;
-            $insertValues = $this->assignValues($values);
-            $response = $this->mongo->products->insertOne($insertValues);
+            // echo '<pre>';
+            // print_r($values);
+            // die;
+            $additonalFeildsData = $this->getAdditionalDataAction($values);
+            $variantsData = $this->getVariationsDataAction($values);
+
+            $insertValuesDataInFormat = $this->assignValues($values, $additonalFeildsData, $variantsData);
+            
+            $response = $this->mongo->products->insertOne($insertValuesDataInFormat);
             if (($response->getInsertedCount())>0) {
                 $success = 1;
             }
@@ -40,8 +43,15 @@ class ProductController extends Controller
 
     public function showAction()
     {
-        $result = $this->mongo->products->find();
-        $this->view->result = $result;
+        if (!$this->request->ispost() || $this->request->getpost('param')=='') {
+            $result = $this->mongo->products->find();
+            $this->view->result = $result;
+
+        } else {
+            $val = ['name' => $this->request->getpost('param')];
+            $result = $this->mongo->products->find($val);
+            $this->view->result = $result;
+        }
     }
 
     public function deleteAction($id)
@@ -58,36 +68,56 @@ class ProductController extends Controller
         $this->view->result = $result;
         if ($this->request->ispost() ) {
             $val = ["_id" => new MongoDB\BSON\ObjectId ($id)];
+
             $values = $this->request->getpost();
-            $updateValues = $this->assignValues($values);
+            // echo '<pre>';
+            // print_r($values);
+            // die;
+            $additonalFeildsData = $this->getAdditionalDataAction($values);
+            $variantsData = $this->getVariationsDataAction($values);
+           
+            $updateValues = $this->assignValues($values, $additonalFeildsData, $variantsData);
             $response = $this->mongo->products->updateOne($val, ['$set' => $updateValues]);
             $this->response->redirect('product/show');
         }
     }
 
-    public function assignValues($values)
+    public function assignValues($values, $additonalFeildsData, $variantsData)
     {
-        $addkeys = $values['additionalKey'];
-        $addValues = $values['additionalValue'];
-        $varKeys = $values['variationKey'];
-        $varValues = $values['variationValue'];
-        if (isset($addkeys)) {
-            $additonalFeilds = array_combine($addkeys, $addValues);
-        }
-
-        if (isset($varKeys)) {
-            $variation = array_combine($varKeys, $varValues);
-        }
-
         $data = array(
             "name" => $values['name'],
             "category" => $values['category'],
             "price" => $values['price'],
-            "stock" => $values['stock'],
-            "additional_fields" => $additonalFeilds,
-            "variations" => $variation
-        );
+            "stock" => $values['stock']);
+            if ($additonalFeildsData) {
+                $data["additional_fields"] = $additonalFeildsData;
+            }
+            if ($variantsData) {
+                $data["variations"] = $variantsData;
+            }
         return $data;
+    }
+
+    public function getAdditionalDataAction($values)
+    {
+        $addkeys = $values['additionalKey'];
+        $addValues = $values['additionalValue'];
+        if (isset($addkeys)) {
+            $additonalFeilds = array_combine($addkeys, $addValues);
+        }
+        return $additonalFeilds;
+    }
+
+    public function getVariationsDataAction($values)
+    {
+        $variantsRawData = $values['variant'];
+        if ($variantsRawData) {
+            foreach ($variantsRawData as $k => $v){
+                $variantsData[$k] = array_combine($v['field'], $v['value']);
+                $variantsData[$k]['price'] = $v['price'];
+            }
+        }
+        return $variantsData;
     }
 
     public function getInfoAction()

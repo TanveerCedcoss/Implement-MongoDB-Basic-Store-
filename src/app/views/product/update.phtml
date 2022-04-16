@@ -1,87 +1,100 @@
 <h2>Update product details</h2>
-<?php echo $this->tag->form(""); ?>
-<?php 
-// print_r($result);die;
-// foreach ($result->variations as $key => $val) {
-    // echo '<input type = "text" value ='.$key.'>';
-    // echo $this->tag->textField(["stock", "value"=>"$key"]);
-    // print_r($key);
-// }
-// die;
-// echo $this->tag->form(""); 
-?>
+<?php
+// echo'<pre>'; print_r($result);die; 
+echo $this->tag->form(""); ?>
 
 <table>
-        <tr><td>
-        <label for="name">Name</label>
-        </td><td>
-        <?php echo $this->tag->textField(["name", "value"=>"$result->name"]); ?>
-        </td></tr>
+    <tr>
+        <td>
+            <label for="name">Name</label>
+        </td>
+        <td>
+            <?php echo $this->tag->textField(["name", "value" => "$result->name"]); ?>
+        </td>
+    </tr>
 
-        <tr><td>
-        <label for="category">Category</label>
-        </td><td>
-        <?php echo $this->tag->textField(["category", "value"=>"$result->category"]); ?>
-        </td></tr>
+    <tr>
+        <td>
+            <label for="category">Category</label>
+        </td>
+        <td>
+            <?php echo $this->tag->textField(["category", "value" => "$result->category"]); ?>
+        </td>
+    </tr>
 
-        <tr><td>
-        <label for="price">Price</label>
-        </td><td>
-        <?php echo $this->tag->numericField(["price", "value"=>"$result->price"]); ?>
-        </td></tr>
+    <tr>
+        <td>
+            <label for="price">Price</label>
+        </td>
+        <td>
+            <?php echo $this->tag->numericField(["price", "value" => "$result->price"]); ?>
+        </td>
+    </tr>
 
-        <tr><td>
-        <label for="stock">Stock</label>
-        </td><td>
-        <?php echo $this->tag->numericField(["stock", "value"=>"$result->stock"]); ?>
-        </td></tr>
-        <tr><td> <label for="additonal-fields">Additional fields</label></td>
-        <td><button type="button" id="add" class="btn btn-sm btn-primary">+</button></td></tr>
-       
+    <tr>
+        <td>
+            <label for="stock">Stock</label>
+        </td>
+        <td>
+            <?php echo $this->tag->numericField(["stock", "value" => "$result->stock"]); ?>
+        </td>
+    </tr>
+    <tr>
+        <td> <label for="additonal-fields">Additional fields</label></td>
+        <td><button type="button" id="add" class="btn btn-sm btn-primary">+</button></td>
+    </tr>
 
-        <?php foreach ($result->additional_fields as $key => $value) {
-            if (!isset($updateCount1)) {
-                $updateCount1=1;
-            }?>
-            <tr <?php echo 'id="addUpd'.$updateCount1.'"';?>><td>
-            <?php echo $this->tag->textField(["additionalKey[]", "value"=>"$key"]); ?>
-            </td><td>
-            <?php echo $this->tag->textField(["additionalValue[]", "value"=>"$value"]); ?>
+    <?php foreach ($result->additional_fields as $key => $value) {
+        if (!isset($updateCount1)) {
+            $updateCount1 = 1;
+        } ?>
+        <tr <?php echo 'id="addUpd' . $updateCount1 . '"'; ?>>
+            <td>
+                <?php echo $this->tag->textField(["additionalKey[]", "value" => "$key"]); ?>
             </td>
-            <td><button type="button"  class="btn-danger my-1" id="removeAdd" data-id=<?php echo 'Upd'.$updateCount1;?>>
-            <i class="fa-solid fa-trash-can"></i></button></td></tr>
-        <?php
-        $updateCount1 +=1;
-          } ?>
+            <td>
+                <?php echo $this->tag->textField(["additionalValue[]", "value" => "$value"]); ?>
+            </td>
+            <td><button type="button" class="btn-danger my-1" id="removeAdd" data-id=<?php echo 'Upd' . $updateCount1; ?>>
+                    <i class="fa-solid fa-trash-can"></i></button></td>
+        </tr>
+    <?php
+        $updateCount1 += 1;
+    } ?>
 
-        </td></tr>
+    </td>
+    </tr>
+<div id="additional"></div>
+    <tr>
+        <td> <label for="variations">Variations</label></td>
+        <td> <button type="button" id="var" class="btn btn-sm btn-primary">+</button></td>
+    </tr>
 </table>
-        <div id="additional"></div>
-        <table>
-        <tr><td> <label for="additonal-fields">Variations</label></td>
-    <td> <button type="button" id="var" class="btn btn-sm btn-primary">+</button></td></tr>
+    <?php
+    foreach ($result->variations as $k => $v) {
+        if (!isset($updateCount2)) {
+            $updateCount2=1;
+        } else {
+            $updateCount2 += 1;
+        }
+        echo '<div class="varUpd'.$updateCount2.'">';
+        foreach ($v as $k2 => $v2) {
+            if ($k2 !='price') {
+                echo '<input type="text" name= variant['.$updateCount2.'][field][] value="'.$k2.'">&nbsp;<input type="text" name= variant['.$updateCount2.'][value][] value="'.$v2.'"><br/>';
+            } else {
+                echo '<input type="text" value="'.$k2.'" readonly>&nbsp;<input type="text" name= variant['.$updateCount2.'][price] value="'.$v2.'"><br/>';
+            }
+        }
+        echo '<button type="button" class="btn-danger my-1" id="removeVar" data-id="Upd'.$updateCount2.'">
+        <i class="fa-solid fa-trash-can"></i></button><br/>';
+        echo '</div>';
+    }
+    ?>
 
-        <?php foreach ($result->variations as $key => $value) {
-            if (!isset($updateCount2)) {
-                $updateCount2=1;
-            }?>
-            <tr <?php echo 'id="varUpd'.$updateCount2.'"';?>><td>
-            <?php echo $this->tag->textField(["variationKey[]", "value"=>"$key"]); ?>
-            </td><td>
-            <?php echo $this->tag->textField(["variationValue[]", "value"=>"$value"]); ?>
-            </td>
-            <td><button type="button"  class="btn-danger my-1" id="removeVar" data-id=<?php echo 'Upd'.$updateCount2;?>>
-        <i class="fa-solid fa-trash-can"></i></button></td></tr>
-        <?php
-        $updateCount2 +=1;
-            }?>
-
-      </table>
-      <div id="variations"></div>
-      <br/>
-    <p>
+<div id="variations"></div>
+<br />
+<p>
     <?php echo $this->tag->submitButton("Update product"); ?>
-    </p>
+</p>
 
 </form>
-
