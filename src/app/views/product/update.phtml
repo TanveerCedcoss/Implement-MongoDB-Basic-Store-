@@ -73,7 +73,7 @@ echo $this->tag->form(""); ?>
     <?php
     foreach ($result->variations as $k => $v) {
         if (!isset($updateCount2)) {
-            $updateCount2=1;
+            $updateCount2=8;
         } else {
             $updateCount2 += 1;
         }
@@ -82,7 +82,7 @@ echo $this->tag->form(""); ?>
             if ($k2 !='price') {
                 echo '<input type="text" name= variant['.$updateCount2.'][field][] value="'.$k2.'">&nbsp;<input type="text" name= variant['.$updateCount2.'][value][] value="'.$v2.'"><br/>';
             } else {
-                echo '<input type="text" value="'.$k2.'" readonly>&nbsp;<input type="text" name= variant['.$updateCount2.'][price] value="'.$v2.'"><br/>';
+                echo '<input type="text" value="'.$k2.'" readonly>&nbsp;<input type="text" name= variant['.$updateCount2.'][price] value="'.$v2[0].'"><br/>';
             }
         }
         echo '<button type="button" class="btn-danger my-1" id="removeVar" data-id="Upd'.$updateCount2.'">

@@ -1,0 +1,117 @@
+<h4>All Orders</h4>
+
+<form action="" method="POST">
+  <div class="input-group rounded">
+    <input type="search" name="param" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+    <button type="submit" class="input-group-text border-0" id="search-addon">
+      <i class="fas fa-search"></i>
+    </button>
+  </div>
+</form>
+<br />
+<h4>Filter Orders</h4>
+<form method="POST">
+  <div class="btn-group">
+    <select id="filter_date" name="date">
+      <option>All</option>
+      <option>Today</option>
+      <option>This week</option>
+      <option>This month</option>
+    </select>
+  </div>
+
+  <div class="btn-group">
+    <select id="filter_status" name="status">
+      <option>All</option>
+      <option>Paid</option>
+      <option>Processing</option>
+      <option>Dispatched</option>
+      <option>Shipped</option>
+      <option>Refunded</option>
+    </select>
+  </div>
+  <br />
+  <br />
+  <div id="custom">
+    <button type="submit" class="btn btn-primary" id="custom_btn">Custom date</button>
+  </div>
+  <br />
+  <button type="submit" class="btn btn-dark">Apply</button>
+
+
+</form>
+<br />
+<br />
+<table class="table table-bordered table-hover">
+  <thead class="thead-light">
+    <tr>
+      <th>Name</th>
+      <th>Address</th>
+      <th>Order date</th>
+      <th>Order Details</th>
+      <th>Quantity</th>
+      <th>Status</th>
+      <th>Edit</th>
+      <th>Delete</th>
+    </tr>
+  </thead>
+  <tbody>
+    <?php
+    foreach ($result as $key => $value) {
+      if ($value->status == 'Paid') {
+        $paid = 'selected';
+      } elseif ($value->status == 'Processing') {
+        $processing = "selected";
+      } elseif ($value->status == 'Dispatched') {
+        $dispatched = 'selected';
+      } elseif ($value->status == 'Shipped') {
+        $shipped = 'selected';
+      } elseif ($value->status == 'Refunded') {
+        $refunded = 'selected';
+      }
+      // print_r($shipped);
+      // die;
+      echo '<tr>
+            <td>' . $value->customer_name . '</td>
+            <td>' . $value->customer_address . '</td>
+            <td>' . $value->date . '</td>
+          
+            <td><button type = "button" class="btn btn-info details" data-id="' . $value->product . '">Details</button</td>
+            <td>' . $value->quantity . '</td>
+            <td>
+            <select name="product" id="update_status">
+            <option value="Paid,' . $value->_id . '" ' . $paid . '>Paid</option>
+            <option value="Processing,' . $value->_id . '" ' . $processing . '>Processing</option>
+            <option value="Dispatched,' . $value->_id . '" ' . $dispatched . '>Dispatched</option>
+            <option value="Shipped,' . $value->_id . '" ' . $shipped . '>Shipped</option>
+            <option value="Refunded,' . $value->_id . '" ' . $refunded . '>Refunded</option>
+            </select>
+            </td>
+            <td><a href="/order/update/' . $value->_id . '"><i class="fas fa-edit"></i></a></td>
+            <td><a href="/order/delete/' . $value->_id . '"><button type="button"  class="btn-danger">
+            <i class="fa-solid fa-delete-left"></i></button></a></td>
+        </tr>';
+    } ?>
+  </tbody>
+</table>
+<br />
+<br />
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"></h5>
+        <button type="button" class="btn-danger" data-bs-dismiss="modal" aria-label="Close">X</button>
+      </div>
+      <div class="modal-body">
+      </div>
+    </div>
+  </div>
+</div>
+<?php
+echo $this->tag->linkTo(
+  '/product/add',
+  'Add more orders!'
+);

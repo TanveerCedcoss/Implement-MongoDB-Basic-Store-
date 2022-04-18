@@ -1,0 +1,80 @@
+<?php
+// echo '<pre>';
+// $data = array();
+// foreach ($result as $k => $v) {
+//     array_push($data, $v);
+// }
+
+// print_r($data);
+// die;
+if (isset($message)) {
+    echo $message;
+} ?>
+<h2>PLACE ORDER</h2>
+
+<?php echo $this->tag->form(""); ?>
+
+<table>
+    <tr>
+        <td>
+            <label for="customer_name">Customer Name</label>
+        </td>
+        <td>
+            <?php echo $this->tag->textField("customer_name"); ?>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <label for="customer_address">Customer address</label>
+        </td>
+        <td>
+            <?php echo $this->tag->textArea("customer_address"); ?>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <label for="product">product</label>
+        </td>
+        <td>
+            <select name="product" id="select_variant">Product
+                <option>Choose product</option>
+                <?php
+                foreach ($result as $k => $v) {
+                    echo '<option value="' . $v->_id . '">' . $v->name . '</option>';
+                }
+                ?>
+            </select>
+        </td>
+    </tr>
+</table>
+
+<tr>
+    <div id="all_variants"></div>
+</tr>
+<table>
+    <tr>
+        <td>
+            <label for="quantity">quantity</label>
+        </td>
+        <td>
+            <?php echo $this->tag->textField("quantity"); ?>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <label for="price">price</label>
+        </td>
+        <td>
+            <?php echo $this->tag->textField(["price", 'value' => "123"]); ?>
+        </td>
+    </tr>
+
+</table>
+<p>
+    <?php echo $this->tag->submitButton("Place Order"); ?>
+</p>
+
+</form>
